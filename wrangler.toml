@@ -1,0 +1,10 @@
+# Cloudflare Pages build settings (dashboard or CI):
+# Framework preset: Vite
+# Build command: npm run build
+# Build output directory: dist
+# Root directory: /
+# Node version: 20
+
+name = "maya"
+compatibility_date = "2026-08-05"
+pages_build_output_dir = "dist"

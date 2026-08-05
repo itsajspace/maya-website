@@ -1,108 +1,138 @@
 import "@fontsource-variable/geist";
 import "@fontsource-variable/geist-mono";
 import "./style.css";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-function revealIn(targets, vars = {}, position) {
-  return {
-    targets,
-    from: { y: vars.y ?? 24, opacity: 0, ...(vars.from || {}) },
-    to: {
-      y: 0,
-      opacity: 1,
-      duration: vars.duration ?? 0.6,
-      stagger: vars.stagger ?? 0,
-      ease: vars.ease ?? "power3.out",
-      immediateRender: false,
-      clearProps: vars.clearProps,
-    },
-    position,
+async function loadGsap() {
+  const gsap = (await import("gsap")).default;
+  const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+  gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.config({ ignoreMobileResize: true });
+  return { gsap, ScrollTrigger };
+}
+
+/**
+ * Slow cinematic load-in, then scroll takes over.
+ * `.hero-in` is applied only after intro so clearProps can't hide the hero.
+ */
+function initHero(gsap) {
+  const header = document.querySelector(".site-header");
+  const status = document.querySelector(".hero-copy .status");
+  const letters = gsap.utils.toArray(".brand-letter");
+  const headline = document.querySelector(".hero-copy .headline");
+  const support = document.querySelector(".hero-copy .support");
+  const ctas = gsap.utils.toArray(".cta-row .cta");
+  const store = document.querySelector(".hero-copy .store-note");
+  const phone = document.querySelector(".phone-hero");
+  const phoneBits = gsap.utils.toArray(
+    ".phone-hero .bubble, .phone-hero .action-card, .phone-hero .chat-top, .phone-hero .chat-composer",
+  );
+  const bg = document.querySelector(".hero-bg img");
+  const hero = document.querySelector(".hero");
+  const copy = document.querySelector(".hero-copy");
+
+  const finish = () => {
+    document.documentElement.classList.add("hero-in");
+    gsap.set(
+      [header, status, ...letters, headline, support, ...ctas, store, phone, ...phoneBits],
+      { clearProps: "opacity,filter" },
+    );
   };
-}
 
-function initHero() {
-  const letters = document.querySelectorAll(".brand-letter");
-  const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+  if (!header || !phone || !hero) {
+    finish();
+    return;
+  }
 
-  // CTAs stay fully visible — never animate opacity (prior GSAP bug left them at 0)
-  gsap.set(".cta-row .cta", { clearProps: "opacity,visibility,transform", opacity: 1, y: 0 });
-
-  const steps = [
-    revealIn(".site-header", { y: -16, duration: 0.65 }),
-    revealIn(".status", { y: 14, duration: 0.45 }, "-=0.35"),
-    {
-      targets: letters,
-      from: {
-        y: 80,
-        opacity: 0,
-        rotateX: -40,
-        filter: "blur(12px)",
-        transformOrigin: "50% 100%",
-      },
-      to: {
-        y: 0,
-        opacity: 1,
-        rotateX: 0,
-        filter: "blur(0px)",
-        duration: 0.95,
-        stagger: 0.06,
-        ease: "power3.out",
-        immediateRender: false,
-      },
-      position: "-=0.25",
-    },
-    revealIn(".headline", { y: 20, duration: 0.55 }, "-=0.5"),
-    revealIn(".support", { y: 16, duration: 0.5 }, "-=0.35"),
-    revealIn(".cta-row .cta", {
-      y: 10,
-      duration: 0.4,
-      stagger: 0.08,
-      from: { opacity: 1 },
-      clearProps: "transform",
-    }, "-=0.28"),
-    revealIn(".store-note", { y: 10, duration: 0.4 }, "-=0.25"),
-    {
-      targets: ".phone-hero",
-      from: { y: 60, opacity: 0, rotate: 5 },
-      to: {
-        y: 0,
-        opacity: 1,
-        rotate: -1.5,
-        duration: 1,
-        ease: "power3.out",
-        immediateRender: false,
-      },
-      position: "-=0.75",
-    },
-    revealIn(".phone-hero .bubble, .phone-hero .action-card", {
-      y: 14,
-      duration: 0.4,
-      stagger: 0.1,
-    }, "-=0.35"),
-    {
-      targets: ".hero-bg img",
-      from: { scale: 1.12 },
-      to: {
-        scale: 1.05,
-        duration: 1.4,
-        ease: "power2.out",
-        immediateRender: false,
-      },
-      position: 0,
-    },
-  ];
-
-  steps.forEach((step) => {
-    tl.fromTo(step.targets, step.from, step.to, step.position);
+  gsap.set([header, status, ...letters, headline, support, ...ctas, store, phone, ...phoneBits], {
+    opacity: 0,
   });
+  gsap.set([status, headline, support, store], { y: 28 });
+  gsap.set(letters, { y: 56 });
+  gsap.set(ctas, { y: 20 });
+  gsap.set(phone, { y: 48 });
+  gsap.set(phoneBits, { y: 16 });
+  if (bg) gsap.set(bg, { scale: 1.12 });
+
+  const tl = gsap.timeline({
+    defaults: { ease: "power2.out" },
+    onComplete: finish,
+  });
+
+  if (bg) {
+    tl.to(bg, { scale: 1, duration: 3.2, ease: "power1.out" }, 0);
+  }
+
+  tl.to(header, { opacity: 1, duration: 1.1 }, 0.15);
+  tl.to(status, { opacity: 1, y: 0, duration: 0.9 }, 0.35);
+  tl.to(
+    letters,
+    {
+      opacity: 1,
+      y: 0,
+      duration: 1.25,
+      stagger: 0.09,
+      ease: "power3.out",
+    },
+    0.55,
+  );
+  tl.to(headline, { opacity: 1, y: 0, duration: 1 }, 0.95);
+  tl.to(support, { opacity: 1, y: 0, duration: 1 }, 1.15);
+  tl.to(ctas, { opacity: 1, y: 0, duration: 0.85, stagger: 0.12 }, 1.35);
+  tl.to(store, { opacity: 1, y: 0, duration: 0.8 }, 1.55);
+  tl.to(phone, { opacity: 1, y: 0, duration: 1.4, ease: "power2.out" }, 0.75);
+  tl.to(
+    phoneBits,
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.75,
+      stagger: 0.12,
+    },
+    1.35,
+  );
+
+  // Scroll-linked hero drift — tied to scroll, smoothed with scrub lag
+  gsap.to(copy, {
+    y: -80,
+    opacity: 0.35,
+    ease: "none",
+    scrollTrigger: {
+      trigger: hero,
+      start: "top top",
+      end: "bottom top",
+      scrub: 1.2,
+    },
+  });
+
+  gsap.to(phone, {
+    y: 120,
+    rotate: 2,
+    ease: "none",
+    scrollTrigger: {
+      trigger: hero,
+      start: "top top",
+      end: "bottom top",
+      scrub: 1.2,
+    },
+  });
+
+  if (bg) {
+    gsap.to(bg, {
+      yPercent: 18,
+      ease: "none",
+      scrollTrigger: {
+        trigger: hero,
+        start: "top top",
+        end: "bottom top",
+        scrub: 1.4,
+      },
+    });
+  }
 }
 
-function initIndiaCinematic() {
+function initIndiaCinematic(gsap) {
   const section = document.querySelector(".india");
   if (!section) return;
 
@@ -111,176 +141,189 @@ function initIndiaCinematic() {
   const meta = document.querySelector(".india-meta");
   const marquee = document.querySelector(".india-marquee");
 
-  gsap.set(chars, {
-    yPercent: 140,
-    opacity: 0,
-    transformOrigin: "50% 100%",
-  });
-  gsap.set(meta, { opacity: 0, y: 24 });
+  gsap.set(chars, { yPercent: 130, opacity: 0 });
+  gsap.set(meta, { opacity: 0, y: 28 });
 
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: section,
       start: "top top",
-      end: "+=200%",
+      end: "+=280%",
       pin: true,
-      scrub: 0.9,
-      anticipatePin: 1,
+      scrub: 1.25,
+      anticipatePin: 0,
     },
   });
 
   tl.to(chars, {
     yPercent: 0,
     opacity: 1,
-    duration: 0.9,
-    stagger: { each: 0.035, from: "start" },
-    ease: "power4.out",
+    duration: 1.4,
+    stagger: { each: 0.045, from: "start" },
+    ease: "none",
   });
 
-  tl.to(lines[0], { xPercent: -8, duration: 1.2, ease: "none" }, 0.45);
-  tl.to(lines[1], { xPercent: 12, duration: 1.2, ease: "none" }, 0.45);
-  tl.to(lines[2], { xPercent: -6, duration: 1.2, ease: "none" }, 0.45);
+  tl.to(lines[0], { xPercent: -10, duration: 1.6, ease: "none" }, 0.5);
+  tl.to(lines[1], { xPercent: 12, duration: 1.6, ease: "none" }, 0.5);
+  tl.to(lines[2], { xPercent: -7, duration: 1.6, ease: "none" }, 0.5);
 
-  tl.to(
-    meta,
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.45,
-      ease: "power2.out",
-    },
-    0.65,
-  );
-
-  tl.fromTo(
-    marquee,
-    { scale: 1 },
-    { scale: 1.04, duration: 1, ease: "none" },
-    0.55,
-  );
-
-  tl.to(
-    [marquee, meta],
-    {
-      opacity: 0,
-      y: -50,
-      duration: 0.55,
-      ease: "power2.in",
-    },
-    1.55,
-  );
+  tl.to(meta, { opacity: 1, y: 0, duration: 0.7, ease: "none" }, 0.85);
+  tl.to(marquee, { scale: 1.05, duration: 1.5, ease: "none" }, 0.7);
+  tl.to([marquee, meta], { opacity: 0, y: -50, duration: 0.8, ease: "none" }, 2);
 }
 
-function initChatDemo() {
+function initChatDemo(gsap) {
   const msgs = gsap.utils.toArray(".chat-thread-demo .demo-msg");
   if (!msgs.length) return;
 
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".promise",
-      start: "top 65%",
-      toggleActions: "play none none none",
-    },
-  });
-
-  msgs.forEach((msg, i) => {
-    tl.fromTo(
-      msg,
-      { opacity: 0, y: 16 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        ease: "power2.out",
-        immediateRender: false,
+  gsap.fromTo(
+    msgs,
+    { opacity: 0, y: 28 },
+    {
+      opacity: 1,
+      y: 0,
+      ease: "none",
+      stagger: 0.2,
+      immediateRender: false,
+      scrollTrigger: {
+        trigger: ".promise",
+        start: "top 75%",
+        end: "top 25%",
+        scrub: 1.1,
       },
-      i * 0.32,
-    );
-  });
+    },
+  );
 }
 
-function initScroll() {
-  const reveal = (targets, trigger, vars = {}) => {
+function initScroll(gsap) {
+  const scrubReveal = (targets, trigger, vars = {}) => {
     gsap.fromTo(
       targets,
-      { y: vars.y ?? 28, opacity: 0 },
+      { y: vars.y ?? 48, opacity: 0 },
       {
         y: 0,
         opacity: 1,
-        duration: vars.duration ?? 0.7,
+        ease: "none",
         stagger: vars.stagger ?? 0,
-        ease: "power2.out",
         immediateRender: false,
         scrollTrigger: {
           trigger,
-          start: vars.start ?? "top 80%",
-          toggleActions: "play none none none",
+          start: vars.start ?? "top 90%",
+          end: vars.end ?? "top 45%",
+          scrub: vars.scrub ?? 1.15,
         },
       },
     );
   };
 
-  reveal(".examples .section-kicker, .examples .section-title", ".examples", { stagger: 0.1 });
-  reveal(".example-pill", ".examples", { y: 18, stagger: 0.04, duration: 0.5, start: "top 78%" });
-  reveal(".promise-copy > *", ".promise", { stagger: 0.1, start: "top 78%" });
-  reveal(".phone-compact", ".promise", { y: 40, duration: 0.9, start: "top 72%" });
-  reveal(".life .section-kicker, .life .section-title", ".life", { stagger: 0.1 });
-  reveal(".cap-row", ".life", { y: 24, stagger: 0.08, start: "top 75%" });
-  reveal(".building-inner > *", ".building", { stagger: 0.1 });
-  reveal(".backed-inner > *", ".backed", { stagger: 0.1 });
-
-  requestAnimationFrame(() => ScrollTrigger.refresh());
+  scrubReveal(".examples .section-kicker, .examples .section-title", ".examples", {
+    stagger: 0.12,
+  });
+  scrubReveal(".example-pill", ".examples", {
+    y: 32,
+    stagger: 0.05,
+    start: "top 88%",
+    end: "top 50%",
+  });
+  scrubReveal(".promise-copy > *", ".promise", {
+    stagger: 0.12,
+    start: "top 85%",
+    end: "top 40%",
+  });
+  scrubReveal(".phone-compact", ".promise", {
+    y: 64,
+    start: "top 80%",
+    end: "top 35%",
+    scrub: 1.3,
+  });
+  scrubReveal(".life .section-kicker, .life .section-title", ".life", {
+    stagger: 0.12,
+  });
+  scrubReveal(".cap-row", ".life", {
+    y: 40,
+    stagger: 0.1,
+    start: "top 88%",
+    end: "top 48%",
+  });
+  scrubReveal(".building-inner > *", ".building", {
+    stagger: 0.14,
+    start: "top 88%",
+    end: "top 42%",
+    scrub: 1.25,
+  });
+  scrubReveal(".backed-inner > *", ".backed", {
+    stagger: 0.14,
+    start: "top 88%",
+    end: "top 42%",
+    scrub: 1.25,
+  });
 }
 
-function initPhotoParallax() {
-  gsap.utils.toArray(".hero-bg img, .section-photo img").forEach((img) => {
+function initPhotoParallax(gsap) {
+  gsap.utils.toArray(".section-photo img").forEach((img) => {
     gsap.fromTo(
       img,
-      { yPercent: -6 },
+      { yPercent: -8 },
       {
-        yPercent: 6,
+        yPercent: 8,
         ease: "none",
         scrollTrigger: {
           trigger: img.closest("section"),
           start: "top bottom",
           end: "bottom top",
-          scrub: true,
+          scrub: 1.4,
         },
       },
     );
   });
 }
 
-if (!reduceMotion) {
-  initHero();
-  initIndiaCinematic();
-  initChatDemo();
-  initScroll();
-  initPhotoParallax();
-} else {
-  gsap.set(
-    [
-      ".site-header",
-      ".status",
-      ".brand-letter",
-      ".headline",
-      ".support",
-      ".cta",
-      ".store-note",
-      ".phone-hero",
-      ".bubble",
-      ".action-card",
-      ".hero-bg",
-      ".india-char",
-      ".india-meta",
-      ".example-pill",
-      ".promise-copy > *",
-      ".phone-compact",
-      ".demo-msg",
-      ".cap-row",
-      ".building-inner > *",
-      ".backed-inner > *",
-    ],
-    { clearProps: "all", opacity: 1 },
+function whenNear(el, rootMargin, fn) {
+  if (!el) {
+    fn();
+    return;
+  }
+  let done = false;
+  const run = () => {
+    if (done) return;
+    done = true;
+    fn();
+  };
+  const io = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        io.disconnect();
+        run();
+      }
+    },
+    { rootMargin },
   );
+  io.observe(el);
 }
+
+async function boot() {
+  if (reduceMotion) {
+    document.documentElement.classList.add("hero-in");
+    return;
+  }
+
+  document.documentElement.classList.add("anim");
+
+  // Failsafe for slower intro
+  window.setTimeout(() => {
+    document.documentElement.classList.add("hero-in");
+  }, 6000);
+
+  const { gsap } = await loadGsap();
+
+  initHero(gsap);
+
+  whenNear(document.querySelector("#india"), "35% 0px", () => {
+    initIndiaCinematic(gsap);
+    initChatDemo(gsap);
+    initScroll(gsap);
+    initPhotoParallax(gsap);
+  });
+}
+
+boot();

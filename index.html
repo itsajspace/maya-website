@@ -9,6 +9,29 @@
       content="Maya — an agentic AI assistant for your phone. Beta releasing soon on the App Store and Google Play Store."
     />
     <title>Maya — Your agentic AI assistant</title>
+    <script>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("anim");
+      } else {
+        document.documentElement.classList.add("hero-in");
+      }
+    </script>
+    <link
+      rel="preload"
+      href="/fonts/geist-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <style>
+      @font-face {
+        font-family: "Geist Variable";
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url("/fonts/geist-latin.woff2") format("woff2");
+      }
+    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

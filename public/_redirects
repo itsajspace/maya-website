@@ -1,0 +1,3 @@
+# Cloudflare Pages — serve clean URLs for legal pages if needed
+/privacy /privacy.html 200
+/terms /terms.html 200
