@@ -26,7 +26,7 @@ function initHero(gsap) {
   const store = document.querySelector(".hero-copy .store-note");
   const phone = document.querySelector(".phone-hero");
   const phoneBits = gsap.utils.toArray(
-    ".phone-hero .bubble, .phone-hero .action-card, .phone-hero .chat-top, .phone-hero .chat-composer",
+    ".phone-hero .bubble, .phone-hero .action-card, .phone-hero .tool-steps, .phone-hero .chat-top, .phone-hero .chat-composer",
   );
   const bg = document.querySelector(".hero-bg img");
   const hero = document.querySelector(".hero");

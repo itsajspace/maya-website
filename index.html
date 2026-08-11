@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Maya — an agentic AI assistant for your phone. Beta releasing soon on the App Store and Google Play Store."
+      content="Maya — your personal shopping assistant. Say what you want; Maya finds it, compares prices, and brings it back for one tap. Beta releasing soon on the App Store and Google Play Store."
     />
-    <title>Maya — Your agentic AI assistant</title>
+    <title>Maya — Your personal shopping assistant</title>
     <script>
       if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
         document.documentElement.classList.add("anim");
@@ -64,10 +64,10 @@
             <h1 class="brand" aria-label="Maya">
               <span class="brand-letter">M</span><span class="brand-letter">a</span><span class="brand-letter">y</span><span class="brand-letter">a</span>
             </h1>
-            <p class="headline">Your agentic AI assistant.</p>
+            <p class="headline">Your personal shopping assistant.</p>
             <p class="support">
-              Don’t just ask. Get things done. Maya plans, books, shops, and
-              brings it back for one tap.
+              Say what you’re after. Maya searches the stores, compares your
+              options and the price, and brings it back for one tap.
             </p>
             <div class="cta-row">
               <a class="cta cta-primary" href="mailto:hello@ciaomaya.com">Say hello</a>
@@ -88,14 +88,19 @@
                   </div>
                 </div>
                 <div class="chat-thread">
-                  <div class="bubble bubble-user">Need a cab to the airport in 20 mins</div>
+                  <div class="bubble bubble-user">Find me a linen shirt under ₹2,000 — something casual</div>
                   <div class="bubble bubble-maya">
-                    On it — checking nearby rides and ETAs.
+                    Searching stores that fit your style and budget…
+                  </div>
+                  <div class="tool-steps">
+                    <span class="tool-step done">Browse</span>
+                    <span class="tool-step done">Compare</span>
+                    <span class="tool-step active">Pick</span>
                   </div>
                   <div class="action-card">
-                    <span class="action-label">Ride ready</span>
-                    <strong>Airport · ~18 min</strong>
-                    <span class="action-meta">₹340 · Sedan · arrives in 4 min</span>
+                    <span class="action-label">Ready for you</span>
+                    <strong>Soft linen shirt · Sage</strong>
+                    <span class="action-meta">₹1,799 · free returns</span>
                     <span class="action-btn">Approve</span>
                   </div>
                 </div>
@@ -165,14 +170,14 @@
           <p class="section-kicker">Try saying</p>
           <h2 class="section-title">Things you can ask Maya</h2>
           <div class="example-grid">
-            <button type="button" class="example-pill">“Book a cab to the airport in 20 mins”</button>
             <button type="button" class="example-pill">“Find a linen shirt under ₹2,000”</button>
-            <button type="button" class="example-pill">“Plan my evening in Jubilee Hills”</button>
-            <button type="button" class="example-pill">“Send flowers to Mom for Sunday”</button>
+            <button type="button" class="example-pill">“Black jeans, slim fit, under ₹2,500”</button>
             <button type="button" class="example-pill">“Compare white sneakers under ₹4,000”</button>
-            <button type="button" class="example-pill">“Get me home from work around 7”</button>
+            <button type="button" class="example-pill">“A rain jacket under ₹3,000”</button>
+            <button type="button" class="example-pill">“Send flowers to Mom for Sunday”</button>
             <button type="button" class="example-pill">“Pick a gift for a housewarming”</button>
-            <button type="button" class="example-pill">“Remind me — milk every morning”</button>
+            <button type="button" class="example-pill">“Compare two coffee makers under ₹6,000”</button>
+            <button type="button" class="example-pill">“Restock my everyday basics”</button>
           </div>
         </div>
       </section>
@@ -182,18 +187,19 @@
           <div class="promise-copy">
             <p class="section-kicker">How it works</p>
             <h2 class="section-title">
-              Tell Maya what you need.<br />
-              She takes it from there.
+              Tell Maya what you want.<br />
+              It shops it for you.
             </h2>
             <p class="section-body">
-              Maya is an agentic assistant — more like a teammate than a chatbot.
-              You speak naturally. She figures out the steps, talks to the right
-              services, and only asks when it’s time to approve.
+              Maya is a shopping assistant — more of a personal shopper than a
+              search box. Say what you want in plain words. Maya browses the
+              right stores, compares options and prices, and only asks when
+              it’s time to buy.
             </p>
             <ol class="steps">
-              <li><span>01</span> Ask in plain language</li>
-              <li><span>02</span> Maya plans and acts</li>
-              <li><span>03</span> You approve with one tap</li>
+              <li><span>01</span> Say what you want</li>
+              <li><span>02</span> Maya finds and compares</li>
+              <li><span>03</span> You approve the buy with one tap</li>
             </ol>
           </div>
 
@@ -210,10 +216,10 @@
                 </div>
                 <div class="chat-thread chat-thread-demo">
                   <div class="bubble bubble-user demo-msg">
-                    Find me a linen shirt under ₹2,000 — something casual
+                    Compare white sneakers under ₹4,000
                   </div>
                   <div class="bubble bubble-maya demo-msg">
-                    Searching stores that fit your style and budget…
+                    Checking a few stores for the best price and reviews…
                   </div>
                   <div class="tool-steps demo-msg">
                     <span class="tool-step done">Browse</span>
@@ -221,9 +227,9 @@
                     <span class="tool-step active">Pick</span>
                   </div>
                   <div class="action-card demo-msg">
-                    <span class="action-label">Ready for you</span>
-                    <strong>Soft linen shirt · Sage</strong>
-                    <span class="action-meta">₹1,799 · free returns</span>
+                    <span class="action-label">Best match</span>
+                    <strong>Everyday white sneakers</strong>
+                    <span class="action-meta">₹3,499 · saved ₹500 · free returns</span>
                     <span class="action-btn">Approve</span>
                   </div>
                 </div>
@@ -236,40 +242,40 @@
       <section class="life" id="life">
         <div class="shell">
           <p class="section-kicker">Capabilities</p>
-          <h2 class="section-title section-title-wide">Life has many lanes.</h2>
+          <h2 class="section-title section-title-wide">Shopping has many lanes.</h2>
           <div class="capability-stack">
             <div class="cap-row">
               <span class="cap-index">01</span>
               <div>
-                <h3>Rides</h3>
-                <p>“Get me to Secunderabad station by 6”</p>
+                <h3>Fashion</h3>
+                <p>“A linen shirt under ₹2,000, something casual”</p>
               </div>
             </div>
             <div class="cap-row">
               <span class="cap-index">02</span>
               <div>
-                <h3>Shopping</h3>
-                <p>“Black jeans, slim fit, under ₹2,500”</p>
+                <h3>Compare &amp; save</h3>
+                <p>“Best price on white sneakers under ₹4,000”</p>
               </div>
             </div>
             <div class="cap-row">
               <span class="cap-index">03</span>
               <div>
-                <h3>Gifts &amp; plans</h3>
-                <p>“Plan Saturday dinner for two”</p>
+                <h3>Gifts</h3>
+                <p>“A housewarming gift under ₹1,500”</p>
               </div>
             </div>
             <div class="cap-row">
               <span class="cap-index">04</span>
               <div>
-                <h3>Recurring asks</h3>
-                <p>“Milk every morning at 9”</p>
+                <h3>Home &amp; essentials</h3>
+                <p>“Restock my everyday basics”</p>
               </div>
             </div>
             <div class="cap-row cap-soon">
               <span class="cap-index">05</span>
               <div>
-                <h3>More integrations</h3>
+                <h3>More stores</h3>
                 <p>Added gradually as we ship</p>
               </div>
             </div>
@@ -286,9 +292,9 @@
           <p class="section-kicker">Status</p>
           <h2 class="section-title section-title-wide">Beta releasing soon.</h2>
           <p class="section-body">
-            A showcase before we open. Not every integration on day one —
-            each one lands when it’s ready. Coming soon to the App Store and
-            Google Play Store.
+            A showcase before we open. Not every store on day one — each one
+            lands when it’s ready. Coming soon to the App Store and Google
+            Play Store.
           </p>
         </div>
       </section>
@@ -329,12 +335,24 @@
           <a href="#india">Made in India</a>
           <a href="/privacy.html">Privacy</a>
           <a href="/terms.html">Terms</a>
+          <a
+            href="https://www.linkedin.com/company/ai-forhumanity/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
           <a href="mailto:hello@ciaomaya.com">hello@ciaomaya.com</a>
         </nav>
       </div>
       <div class="shell footer-legal">
+        <p class="footer-address">
+          Registered office: Flat No. 102, Plot No. 31–32, Lasya Elite, Kranthi
+          Nagar, Bachupally, Qutubullapur, K.V. Rangareddy — 500090, Telangana,
+          India
+        </p>
         <p>
-          © 2026 AI for Humanity Private Limited. All rights reserved.
+          © 2026 <span class="footer-highlight">AI for Humanity Private Limited</span> ·
+          <span class="footer-cin">CIN&nbsp;U58201TS2026PTC211641</span> · All rights reserved.
         </p>
       </div>
     </footer>

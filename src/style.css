@@ -870,10 +870,10 @@ main,
 }
 
 .footer-company {
-  font-size: 0.88rem;
-  font-weight: 400;
+  font-size: 1.35rem;
+  font-weight: 600;
   color: var(--ink);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 .footer-tag {
@@ -901,6 +901,13 @@ main,
 
 .footer-legal {
   padding-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-address {
+  max-width: 70ch;
 }
 
 .footer-legal p {
@@ -908,6 +915,16 @@ main,
   font-size: 0.75rem;
   color: var(--muted);
   letter-spacing: 0.01em;
+}
+
+.footer-highlight {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.footer-cin {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
 }
 
 /* —— Legal pages —— */
