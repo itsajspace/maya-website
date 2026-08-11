@@ -585,18 +585,15 @@ main,
   max-width: 36rem;
 }
 
-.india-flag-static {
+.india-flag {
   flex-shrink: 0;
   display: block;
+  width: clamp(3.5rem, 7vw, 4.5rem);
+  height: auto;
   border-radius: 2px;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
   /* Never animate the flag */
   transform: none !important;
-  animation: none !important;
-  transition: none !important;
-}
-
-.india-flag-static * {
   animation: none !important;
   transition: none !important;
 }
